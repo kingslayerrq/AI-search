@@ -48,8 +48,9 @@ class ID:
 
         print("Depth = {}".format(depth))
 
+        visited = set()
         for n in self.nodes:
-            visited = set()
+            visited.add(n)
             self.dfsHelp(n, 1, depth, visited)
         
 
