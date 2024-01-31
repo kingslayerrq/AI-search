@@ -13,47 +13,52 @@ class ID:
         self.nodes = self.constructNodes(input)
         self.adj_list = self.constructAdjList(self.budget, self.nodes)
 
-    # ids
-    def ids(self, flag):
-
-        return
-
     # dfs
-    def dfsHelp(self, cur_node: Node, cur_depth: int, max_depth: int, visited: set[Node]):
+    def dfsHelp(self, cur_node: Node, cur_depth: int, max_depth: int, visited: set[Node], res: set[Node]):
         # break out of the recursion if exceeds depth
-        if len(visited) == max_depth:
-            # print("broke!")
+        if cur_depth > max_depth:
             return
-        print("curdepth: {} maxdepth: {}".format(cur_depth, max_depth), end="")
-        print("Visited: ", end="")
-        visited.add(cur_node)
-        for v in visited:
-            print(v.name, end=" ")
-        print("\n")
+        # log out the result by depth
+        self.printResult(res)
         cur_depth += 1
-        # print("Node {} has {} avail neighbors".format(cur_node.name, len(self.adj_list[cur_node])))
         for n in self.adj_list[cur_node]:
             if n not in visited:
-                # print("{} is not in visited".format(n.name))
-                # print("curdepth: {} maxdepth: {}".format(cur_depth, max_depth), end="")
-                self.dfsHelp(n, cur_depth, max_depth, visited)
-            # else:
-                # print("{} is already in visited".format(n.name))
+                res.add(n)
+                self.dfsHelp(n, cur_depth, max_depth, visited, res)
+                res.remove(n)                                                           # backtrack
 
+    # do dfs based on depth of a tree
     def dfs(self, depth: int):
-        # init a new set for visited nodes
-        visited_dict = {}
-        for n in self.nodes:
-            visited_dict[n] = set()
-
-        print("Depth = {}".format(depth))
-
         visited = set()
         for n in self.nodes:
+            res = set()
+            # initialize on first iteration since I didnt set a null node to start from
             visited.add(n)
-            self.dfsHelp(n, 1, depth, visited)
+            res.add(n)
+            self.dfsHelp(n, 1, max_depth = depth, visited = visited, res = res)
         
+    # call iterative deepening search with flag for display
+    def ids(self, depth: int, flag):
+        for i in range( 1, depth + 1):
+            print("Depth = {}".format(i))
+            self.dfs(i)
+            print("\n")
 
+    # log out dfs result
+    def printResult(self, res: set[Node]):
+        total_value = 0
+        total_cost = 0
+        res_string = ""
+        res_string += "{"
+        for r in res:
+            total_value += r.value
+            total_cost += r.cost
+            res_string += r.name
+            res_string += " "
+        res_string = res_string.strip()
+        res_string += "}. "
+        res_string += "Value = {}. Cost = {}.".format(total_value, total_cost)
+        print(res_string)
 
     # construct nodes from input
     def constructNodes(self, input) -> list[Node]:
@@ -80,10 +85,10 @@ class ID:
                 if n.cost <= leftover and n is not nodes[i]:
                     l.append(n)
             adj_list[nodes[i]] = l
-            print("Node {} has ".format(nodes[i].name), end="")
-            for n in l:
-                print("{}".format(n.name), end=" ")
-            print("\n")
+            # print("Node {} has ".format(nodes[i].name), end="")
+            # for n in l:
+                # print("{}".format(n.name), end=" ")
+            # print("\n")
         return adj_list
 
 
@@ -100,5 +105,5 @@ if __name__ == "__main__":
     budget = int(sys.argv[2])
     flag = sys.argv[3]
     ID_instance = ID(target, budget, input)
-    ID_instance.dfs(2)
+    ID_instance.ids(2, flag)
 
