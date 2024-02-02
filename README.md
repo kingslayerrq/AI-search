@@ -1,6 +1,6 @@
 # AI-search
 ## File Structure
-**AI-search**
+**AI-search**  
 ├── [Budget-HC.py](Budget-HC.py)  
 ├── [Budget-ID.py](Budget-ID.py)  
 └── [input.txt](input.txt)  
