@@ -2,11 +2,14 @@ import sys
 import copy
 import random
 
+
 class Node:
     def __init__(self, name: str, value: int, cost: int):
         self.name = name
         self.cost = int(cost)
         self.value = int(value)
+
+
 class HC:
     def __init__(self, target: int, budget: int, input):
         self.target = target
@@ -20,7 +23,7 @@ class HC:
     def generateStartingState(self, flag: bool) -> None:
         res = []
         for i in self.nodes:
-            if random.choice([0,1]) == 1:
+            if random.choice([0, 1]) == 1:
                 res.append(i)
         if flag:
             print("Randomly chosen starting state: ")
@@ -34,7 +37,7 @@ class HC:
         """Calculate Error based on current state, an Error value of 0 means we found the solution:
         1. Don't reward if cost is less than budget or value exceeds target value
         2. Punish if cost is more than budget or value doesn't meet target value
-           
+
         Args:
             state (list[Node]): current list of nodes chosen
 
@@ -47,7 +50,7 @@ class HC:
             total_cost += i.cost
             total_value += i.value
         return max(0, total_cost - self.budget) + max(0, self.target - total_value)
-    
+
     # get all neighbors
     def getNeighbors(self, state: list[Node]) -> list[list[Node]]:
         """A Neighbor can be:
@@ -73,7 +76,7 @@ class HC:
                 cpy.append(i)
                 res.append(cpy)
         return res
-    
+
     # get the best(lowest error value) neighbor from all available neighbors
     def getBestNeighbor(self, neighbors: list[list[Node]]) -> list[Node]:
         """Validate neighbor list and return the neighbor that has the lowest error value that is lower than current error value
@@ -103,11 +106,12 @@ class HC:
                 sys.exit(0)
             neighbors = self.getNeighbors(self.cur_state)
             # log out all neighbors
-            if flag: self.printNeighbors(neighbors=neighbors)
+            if flag:
+                self.printNeighbors(neighbors=neighbors)
             next_state = self.getBestNeighbor(neighbors=neighbors)
             # when the search fails
             if next_state == self.cur_state:
-                return 
+                return
             else:
                 if flag:
                     print("\n")
@@ -115,23 +119,24 @@ class HC:
                     print(self.getResultString(next_state))
                 self.cur_state = next_state
                 self.cur_error_value = self.calculateError(self.cur_state)
-    
+
     def randomRestart(self, restart_num: int, flag: bool):
         for i in range(restart_num):
-            if i != 0 and flag: print("\n")
+            if i != 0 and flag:
+                print("\n")
             # generate starting states
             self.generateStartingState(flag)
             self.hillClimb(flag)
         # Search failed if no state was returned before exhaust all restarts
         print("Search failed.")
-        
+
     # print all neighbors
     def printNeighbors(self, neighbors: list[list[Node]]) -> None:
         if len(neighbors) > 0:
             print("Neighbors: ")
             for n in neighbors:
-                print(self.getResultString(n)) 
-       
+                print(self.getResultString(n))
+
     # format the result to result string
     def getResultString(self, res: list[Node]) -> str:
         total_value = 0
@@ -145,7 +150,9 @@ class HC:
             res_string += " "
         res_string = res_string.strip()
         res_string += "}. "
-        res_string += "Value = {}. Cost = {}. Error = {}.".format(total_value, total_cost, self.calculateError(res))
+        res_string += "Value = {}. Cost = {}. Error = {}.".format(
+            total_value, total_cost, self.calculateError(res)
+        )
         return res_string
 
     # construct nodes from input file content
@@ -188,12 +195,12 @@ if __name__ == "__main__":
     # seed for debuging purpose
     # random.seed(1)
     # read the input.txt
-    input = open('input.txt', 'r')
+    input = open("input.txt", "r")
     # parse cmd input arg
     if len(sys.argv) != 5:
         print("Invalid arg count!!", file=sys.stderr)
         sys.exit(0)
-        
+
     target = int(sys.argv[1])
     budget = int(sys.argv[2])
     flag = sys.argv[3]
@@ -206,11 +213,6 @@ if __name__ == "__main__":
     else:
         print("Invalid flag input!!", file=sys.stderr)
         sys.exit(0)
-    
+
     HC_instance = HC(target, budget, input)
     HC_instance.randomRestart(restart_num=restart_num, flag=flag)
-    
-    
-    
-    
-

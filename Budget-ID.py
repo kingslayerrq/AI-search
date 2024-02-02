@@ -42,7 +42,8 @@ class ID:
         if flag:
             print(result_string)
         if self.checkResult(res):
-            if flag: print("\n")
+            if flag:
+                print("\n")
             print("Found solution ", result_string)
             sys.exit(0)
 
