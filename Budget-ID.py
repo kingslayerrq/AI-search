@@ -140,7 +140,6 @@ class ID:
 if __name__ == "__main__":
     # read the input.txt
     input = open("input.txt", "r")
-
     # parse cmd input arg
     if len(sys.argv) != 4:
         print("Invalid arg count!!", file=sys.stderr)
@@ -148,6 +147,7 @@ if __name__ == "__main__":
     target = int(sys.argv[1])
     budget = int(sys.argv[2])
     flag = sys.argv[3]
+    # parse flag
     if flag == "V":
         flag = True
     elif flag == "C":
@@ -155,5 +155,7 @@ if __name__ == "__main__":
     else:
         print("Invalid flag input!!", file=sys.stderr)
         sys.exit(0)
+    # construct instance of ID
     ID_instance = ID(target, budget, input)
-    ID_instance.ids(3, flag)
+    # do ids based on max num of branching factor
+    ID_instance.ids(len(ID_instance.nodes), flag)
