@@ -19,10 +19,10 @@ ______________________________________________________________________
 
 - **Open terminal and cd to this dir**
 - `python Budget-ID.py {target_value} {budget} {flag_for_display_trace}`
-  - replace *`target_value`, `budget`, `flag_for_display_trace`* accordingly
+  - replace *`target_value: int`, `budget: int`, `flag_for_display_trace: 'V' for Verbose, 'C' for Compact`* accordingly
 
 ### Budget-HC
 
 - **Open terminal and cd to this dir**
 - `python Budget-HC.py {target_value} {budget} {flag_for_display_trace} {restart_num}`
-  - replace *`target_value`, `budget`, `flag_for_display_trace`, `restart_num`* accordingly
+  - replace *`target_value: int`, `budget: int`, `flag_for_display_trace: 'V' for Verbose, 'C' for Compact`, `restart_num: int`* accordingly
