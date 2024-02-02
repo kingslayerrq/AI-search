@@ -186,7 +186,7 @@ class HC:
 
 if __name__ == "__main__":
     # seed for debuging purpose
-    random.seed(1)
+    # random.seed(1)
     # read the input.txt
     input = open('input.txt', 'r')
     # parse cmd input arg
